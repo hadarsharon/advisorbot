@@ -2,10 +2,11 @@
 #ifndef ADVISORBOT_ADVISORMAIN_H
 #define ADVISORBOT_ADVISORMAIN_H
 
-#define BOTPROMPT "advisorbot>"
+#define BOTPROMPT "advisorbot> "
 #define USERPROMPT "user>"
 
 #include <string>
+#include <map>
 
 class AdvisorMain {
 public:
@@ -16,6 +17,10 @@ public:
 
 private:
     void printMenu();
+
+    std::string readUserCommand();
+
+    void handleUserCommand(std::string &userCommand);
 
     /** C1: help - List all available commands */
     void printHelp();
@@ -45,6 +50,18 @@ private:
 
     /** C9: step - move to next time step */
     void moveToNextTimestep();
+
+    std::map<std::string, std::pair<std::string, std::string>> helpMap = {
+            {"help", {"help", "list all available commands"}},
+            {"help <cmd>", {"help <cmd>", "output help for the specified command"}},
+            {"prod", {"prod", "list available products"}},
+            {"min", {"min <product> <ask/bid>", ""}},
+            {"max", {"max <product> <ask/bid>", ""}},
+            {"avg", {"avg <product> <ask/bid> <timesteps>", ""}},
+            {"predict", {"predict <min/max> <product> <ask/bid>", ""}},
+            {"time", {"time", "state current time in dataset, i.e. which timeframe are we looking at"}},
+            {"step", {"step", "move to the next time step"}}
+    };
 };
 
 

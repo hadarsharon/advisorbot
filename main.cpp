@@ -1,6 +1,7 @@
-#include <iostream>
+#include "AdvisorMain.h"
 
 int main() {
-    std::cout << ADVISORBOTPROMPT << "Please enter a command, or help for a list of commands" << std::endl;
+    AdvisorMain app{};
+    app.init();
     return 0;
 }
