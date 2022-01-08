@@ -1,6 +1,8 @@
 #include <iostream>
 
+#define ADVISORBOTPROMPT "advisorbot>"
+
 int main() {
-    std::cout << "Hello, World!" << std::endl;
+    std::cout << ADVISORBOTPROMPT << std::endl;
     return 0;
 }
