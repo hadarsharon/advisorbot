@@ -1,8 +1,6 @@
 #include <iostream>
 
-#define ADVISORBOTPROMPT "advisorbot>"
-
 int main() {
-    std::cout << ADVISORBOTPROMPT << std::endl;
+    std::cout << ADVISORBOTPROMPT << "Please enter a command, or help for a list of commands" << std::endl;
     return 0;
 }
