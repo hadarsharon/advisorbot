@@ -216,7 +216,7 @@ void AdvisorMain::predictProductNextMaxMinOfType(const std::vector<std::string> 
     double predicted = Calculator::calculateAverageMinMaxOverTimesteps(ordersPerTimestep, minOrMax);
 
     std::cout << BOTPROMPT << "The predicted " << minOrMax << " " << orderType << " price of " << product
-              << "for the next time step is " << predicted << std::endl;
+              << " for the next time step is " << predicted << std::endl;
 }
 
 void AdvisorMain::printTime() const {
