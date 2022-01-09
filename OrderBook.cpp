@@ -22,6 +22,10 @@ std::vector<std::string> OrderBook::populateProducts() {
     return products;
 }
 
+bool OrderBook::compareTimestamps(const std::string &t1, const std::string &t2) {
+    return t1 < t2;
+}
+
 std::vector<std::string> OrderBook::populateTimestamps() {
     std::map<std::string, bool> timeMap;
     for (const OrderBookEntry &e: orders) {
@@ -31,6 +35,7 @@ std::vector<std::string> OrderBook::populateTimestamps() {
     for (auto const &e: timeMap) {
         timestamps.push_back(e.first);
     }
+    std::sort(timestamps.begin(), timestamps.end(), compareTimestamps);
     return timestamps;
 }
 
