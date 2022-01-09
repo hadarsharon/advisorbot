@@ -58,7 +58,7 @@ private:
     void printAllCurrentOrdersOfType(const std::string &orderType);
 
     /** current timestamp along with its index in the OrderBook object assigned to this instance (orderBook) */
-    std::pair<std::string, int> currentTime;
+    std::pair<std::string, int> currentTime = {"", 0};
 
     /** container for printing the contents of the help and help <cmd> functions */
     std::map<std::string, std::pair<std::string, std::string>> helpMap = {

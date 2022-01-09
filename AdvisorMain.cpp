@@ -73,12 +73,15 @@ void AdvisorMain::userPrompt() {
 
 
 void AdvisorMain::init() {
-    currentTime = {orderBook.getEarliestTime(), 0}; // program is always initialized at the earliest time step
+    if (currentTime.first.empty())
+        currentTime = {orderBook.getEarliestTime(), 0}; // program is always initialized at the earliest time step
     try {
         userPrompt();
     } catch (const std::invalid_argument &e) {  // if bad command or arguments passed, let user retry
+        std::cin.clear();
         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // flush input before retry
-        userPrompt();
+        std::cout << BOTPROMPT << e.what() << std::endl << std::endl; // show user what went wrong
+        init();
     }
 }
 
