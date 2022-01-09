@@ -30,15 +30,23 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
             helpCmd(cmd[1]);
         else
             std::cout << BOTPROMPT << "Invalid argument to 'help': " << cmd[1] << " (unknown command)" << std::endl;
-    } else
+    } else if (cmd[0] == "prod") {
+        listProducts();
+    } else if (cmd[0] == "exit") {
+        terminateGracefully();
+    } else {
         std::cout << BOTPROMPT << "Bad choice man" << std::endl;
+    }
 }
 
 void AdvisorMain::init() {
     std::string userCommand;
-    std::cout << BOTPROMPT << "Please enter a command, or help for a list of commands" << std::endl;
-    userCommand = readUserCommand();
-    handleUserCommand(userCommand);
+    do {
+        std::cout << BOTPROMPT << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
+                  << std::endl;
+        userCommand = readUserCommand();
+        handleUserCommand(userCommand);
+    } while (userCommand != "exit");
 }
 
 void AdvisorMain::printMenu() {
@@ -60,7 +68,15 @@ void AdvisorMain::helpCmd(const std::string &cmd) {
 }
 
 void AdvisorMain::listProducts() {
-
+    bool first = true;
+    for (const std::string &p: orderBook.getKnownProducts()) {
+        if (!first)
+            std::cout << ',';
+        else
+            first = false;
+        std::cout << p;
+    }
+    std::cout << std::endl;
 }
 
 double AdvisorMain::getProductMinOfType(std::string product, std::string type) {
@@ -85,4 +101,8 @@ void AdvisorMain::printTime() {
 
 void AdvisorMain::moveToNextTimestep() {
 
+}
+
+void AdvisorMain::terminateGracefully() {
+    exit(0);
 }

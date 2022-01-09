@@ -5,6 +5,7 @@
 #define BOTPROMPT "advisorbot> "
 #define USERPROMPT "user>"
 
+#include "OrderBook.h"
 #include <string>
 #include <map>
 
@@ -17,6 +18,8 @@ public:
 
 private:
     void printMenu();
+
+    static void terminateGracefully();
 
     std::string readUserCommand();
 
@@ -52,16 +55,20 @@ private:
     void moveToNextTimestep();
 
     std::map<std::string, std::pair<std::string, std::string>> helpMap = {
-            {"help", {"help", "list all available commands"}},
-            {"help <cmd>", {"help <cmd>", "output help for the specified command"}},
-            {"prod", {"prod", "list available products"}},
-            {"min", {"min <product> <ask/bid>", ""}},
-            {"max", {"max <product> <ask/bid>", ""}},
-            {"avg", {"avg <product> <ask/bid> <timesteps>", ""}},
-            {"predict", {"predict <min/max> <product> <ask/bid>", ""}},
-            {"time", {"time", "state current time in dataset, i.e. which timeframe are we looking at"}},
-            {"step", {"step", "move to the next time step"}}
+            {"help",       {"help",                                  "list all available commands"}},
+            {"help <cmd>", {"help <cmd>",                            "output help for the specified command"}},
+            {"prod",       {"prod",                                  "list available products"}},
+            {"min",        {"min <product> <ask/bid>",               ""}},
+            {"max",        {"max <product> <ask/bid>",               ""}},
+            {"avg",        {"avg <product> <ask/bid> <timesteps>",   ""}},
+            {"predict",    {"predict <min/max> <product> <ask/bid>", ""}},
+            {"time",       {"time",                                  "state current time in dataset, i.e. which timeframe are we looking at"}},
+            {"step",       {"step",                                  "move to the next time step"}}
     };
+
+    OrderBook orderBook{"20200601.csv"};
+
+
 };
 
 
