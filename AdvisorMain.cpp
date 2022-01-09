@@ -35,6 +35,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         printAvailableProducts();
     } else if (cmd[0] == "min" || cmd[0] == "max") {
         printProductMinMaxOfType(cmd);
+    } else if (cmd[0] == "avg") {
+        printProductAvgOfTypeOverTimesteps(cmd);
     } else if (cmd[0] == "time") {
         printTime();
     } else if (cmd[0] == "step") {
