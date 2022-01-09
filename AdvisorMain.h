@@ -35,11 +35,8 @@ private:
     /** C3: prod - List available products */
     void printAvailableProducts();
 
-    /** C4: min - Find minimum bid or ask for product in current time step */
-    void printProductMinOfType(std::string product, OrderBookType type);
-
-    /** C5: max - Find maximum bid or ask for product in current time step */
-    double getProductMaxOfType(std::string product, std::string type);  // TODO: use Enum for type
+    /** C4 + C5: min/max - Find minimum/maximum bid or ask for product in current time step */
+    void printProductMinMaxOfType(const std::vector<std::string> &cmd);
 
     /** C6: avg - compute average ask or bid for the sent product over the sent number of time steps  */
     // TODO: verify type of timesteps, use Enum for type
@@ -55,6 +52,8 @@ private:
     /** C9: step - move to next time step */
     void moveToNextTimestep();
 
+    std::string currentTime;
+
     std::map<std::string, std::pair<std::string, std::string>> helpMap = {
             {"help",       {"help",                                  "list all available commands"}},
             {"help <cmd>", {"help <cmd>",                            "output help for the specified command"}},
@@ -66,6 +65,13 @@ private:
             {"time",       {"time",                                  "state current time in dataset, i.e. which timeframe are we looking at"}},
             {"step",       {"step",                                  "move to the next time step"}}
     };
+
+    std::map<std::string, OrderBookType> orderBookTypes = {
+            {"ask", OrderBookType::ask},
+            {"bid", OrderBookType::bid}
+    };
+
+    std::vector<std::string> products;
 
     OrderBook orderBook{"20200601.csv"};
 

@@ -2,7 +2,7 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <vector>
-#include <exception>
+#include <algorithm>
 
 AdvisorMain::AdvisorMain() {
 
@@ -33,8 +33,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
             std::cout << BOTPROMPT << "Invalid argument to 'help': " << cmd[1] << " (unknown command)" << std::endl;
     } else if (cmd[0] == "prod") {
         printAvailableProducts();
-    } else if (cmd[0] == "min") {
-
+    } else if (cmd[0] == "min" || cmd[0] == "max") {
+        printProductMinMaxOfType(cmd);
     } else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
@@ -45,6 +45,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
 }
 
 void AdvisorMain::init() {
+    currentTime = orderBook.getEarliestTime();
+    products = orderBook.getKnownProducts();
     std::string userCommand;
     do {
         std::cout << std::endl;
@@ -71,7 +73,7 @@ void AdvisorMain::printHelpForCmd(const std::string &cmd) {
 
 void AdvisorMain::printAvailableProducts() {
     bool first = true;
-    for (const std::string &p: orderBook.getKnownProducts()) {
+    for (const std::string &p: products) {
         if (!first)
             std::cout << ',';
         else
@@ -81,12 +83,38 @@ void AdvisorMain::printAvailableProducts() {
     std::cout << std::endl;
 }
 
-void AdvisorMain::printProductMinOfType(std::string product, OrderBookType type) {
+void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) {
+    if (cmd.size() < 3) // must be something like '<min/max> <product> <bid/ask>'
+        throw std::invalid_argument("Invalid arguments to 'min'/'max'");
 
-}
+    std::string min_or_max = cmd[0];
+    std::string product = cmd[1];
+    std::string orderType = cmd[2];
 
-double AdvisorMain::getProductMaxOfType(std::string product, std::string type) {
-    return 0;
+    OrderBookType orderBookType;
+    if (!std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; })) {
+        std::cout << "Unknown product: " << product << std::endl;
+        throw std::invalid_argument("Unknown product");
+    }
+
+    if (orderBookTypes.count(orderType) > 0) {
+        orderBookType = orderBookTypes[orderType];
+    } else {
+        std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
+        throw std::invalid_argument("Invalid argument for <bid/ask>");
+    }
+
+    std::vector<OrderBookEntry> orders = orderBook.getOrders(orderBookType, product, currentTime);
+
+    double price;
+    if (min_or_max == "min")
+        price = OrderBook::getLowPrice(orders);
+    else if (min_or_max == "max")
+        price = OrderBook::getHighPrice(orders);
+    else
+        throw std::invalid_argument("Invalid argument for <min/max>");
+
+    std::cout << "The " << min_or_max << " " << orderType << " for " << product << " is " << price << std::endl;
 }
 
 double AdvisorMain::getProductAvgOfTypeOverTimesteps(std::string product, std::string type, int timesteps) {
