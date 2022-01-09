@@ -27,7 +27,7 @@ public:
     bool checkProductExists(std::string product);
 
     /** given a certain order type (string value), check if it is a valid one based on the Enum */
-    bool isValidOrderType(std::string orderType);
+    bool isValidOrderType(const std::string& orderType);
 
     /** get maximal price in vector of orders */
     static double getHighPrice(std::vector<OrderBookEntry> &orders);

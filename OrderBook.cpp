@@ -89,6 +89,6 @@ bool OrderBook::checkProductExists(std::string product) {
     return std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; });
 }
 
-bool OrderBook::isValidOrderType(std::string orderType) {
+bool OrderBook::isValidOrderType(const std::string &orderType) {
     return orderBookTypes.count(orderType) > 0;
 }
