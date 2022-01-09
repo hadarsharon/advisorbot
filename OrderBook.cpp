@@ -6,6 +6,7 @@
 OrderBook::OrderBook(std::string filename) {
     orders = CSVReader::readCSV(std::move(filename));
     products = populateProducts();
+    timestamps = populateTimestamps();
 }
 
 std::vector<std::string> OrderBook::populateProducts() {
@@ -18,6 +19,18 @@ std::vector<std::string> OrderBook::populateProducts() {
         products.push_back(e.first);
     }
     return products;
+}
+
+std::vector<std::string> OrderBook::populateTimestamps() {
+    std::map<std::string, bool> timeMap;
+    for (const OrderBookEntry &e: orders) {
+        timeMap[e.timestamp] = true;
+    }
+    timestamps.reserve(timeMap.size());
+    for (auto const &e: timeMap) {
+        timestamps.push_back(e.first);
+    }
+    return timestamps;
 }
 
 std::vector<OrderBookEntry>

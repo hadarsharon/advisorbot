@@ -35,9 +35,12 @@ private:
     /** populate vector of all known products in the dataset */
     std::vector<std::string> populateProducts();
 
-    std::vector<OrderBookEntry> orders;
+    /** populate vector of all timestamps in the dataset */
+    std::vector<std::string> populateTimestamps();
 
+    std::vector<OrderBookEntry> orders;
     std::vector<std::string> products;
+    std::vector<std::string> timestamps;
 
 };
 
