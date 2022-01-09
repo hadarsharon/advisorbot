@@ -22,6 +22,7 @@ std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
             std::cout << "CSVReader::readCSV bad data - " << e.what() << std::endl;
         }
     }
+    fclose(fp);
     std::cout << "CSVReader::readCSV read " << entries.size() << " entries" << std::endl;
     return entries;
 }
