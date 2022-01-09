@@ -1,12 +1,11 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <fstream>
-#include <utility>
 #include "OrderBookEntry.h"
 
 CSVReader::CSVReader() = default;
 
-std::vector<OrderBookEntry> CSVReader::readCSV(const std::string& csvFilename) {
+std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
     std::vector<OrderBookEntry> entries;
     std::ifstream csvFile{csvFilename};
     std::string line;
@@ -24,7 +23,7 @@ std::vector<OrderBookEntry> CSVReader::readCSV(const std::string& csvFilename) {
     return entries;
 }
 
-std::vector<std::string> CSVReader::tokenise(const std::string& csvLine, char separator) {
+std::vector<std::string> CSVReader::tokenise(const std::string &csvLine, char separator) {
     std::vector<std::string> tokens;
     signed int start, end;
     std::string token;
@@ -55,19 +54,5 @@ OrderBookEntry CSVReader::stringsToOBE(std::vector<std::string> tokens) {
         throw;
     }
     OrderBookEntry obe{price, tokens[0], tokens[1], OrderBookEntry::stringToOrderBookType(tokens[2])};
-    return obe;
-}
-
-OrderBookEntry
-CSVReader::stringsToOBE(const std::string& priceString, std::string timestamp, std::string product,
-                        OrderBookType OrderType) {
-    double price;
-    try {
-        price = std::stod(priceString);
-    } catch (std::exception &e) {
-        std::cout << "CSVReader::stringsToOBE Bad float! " << priceString << std::endl;
-        throw;
-    }
-    OrderBookEntry obe{price, std::move(timestamp), std::move(product), OrderType};
     return obe;
 }
