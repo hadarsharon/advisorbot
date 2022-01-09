@@ -52,6 +52,9 @@ private:
     /** C9: step - move to next time step */
     void moveToNextTimestep();
 
+    /** (EXTRA COMMAND - MY IMPLEMENTATION) C10: list - list all asks/bids that happened in the current time step */
+    void printAllCurrentOrdersOfType(std::string orderType);
+
     /** current timestamp along with its index in the OrderBook object assigned to this instance (orderBook) */
     std::pair<std::string, int> currentTime;
 
@@ -64,7 +67,8 @@ private:
             {"avg",        {"avg <product> <ask/bid> <timesteps>",   ""}},
             {"predict",    {"predict <min/max> <product> <ask/bid>", ""}},
             {"time",       {"time",                                  "state current time in dataset, i.e. which timeframe are we looking at"}},
-            {"step",       {"step",                                  "move to the next time step"}}
+            {"step",       {"step",                                  "move to the next time step"}},
+            {"list",       {"list <ask/bid>",                        "list all asks/bids in the current time step"}}
     };
 
     OrderBook orderBook{CSVDATAFILE};

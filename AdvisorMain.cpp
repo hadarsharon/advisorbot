@@ -192,3 +192,20 @@ void AdvisorMain::terminateGracefully() {
     std::cout << "Exiting..." << std::endl;
     exit(0);
 }
+
+void AdvisorMain::printAllCurrentOrdersOfType(std::string orderType) {
+    if (!orderBook.isValidOrderType(orderType)) {
+        std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
+        throw std::invalid_argument("Invalid argument for <bid/ask>");
+    }
+    std::vector<OrderBookEntry> orders;
+    orders = orderBook.getOrders(OrderBookEntry::stringToOrderBookType(orderType), "", currentTime.first);
+    if (orders.empty()) {
+        std::cout << BOTPROMPT << "No orders of type " << orderType << " found for current time step: "
+                  << currentTime.first << std::endl;
+    } else {
+        for (const OrderBookEntry &e: orders) {
+            
+        }
+    }
+}
