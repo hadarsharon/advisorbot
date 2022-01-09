@@ -22,7 +22,7 @@ private:
     static void terminateGracefully();
 
     /** Get user input for further processing */
-    std::string readUserCommand();
+    static std::string readUserCommand();
 
     /** Trigger commands based on user input */
     void handleUserCommand(std::string &userCommand);
@@ -58,6 +58,7 @@ private:
     /** current timestamp along with its index in the OrderBook object assigned to this instance (orderBook) */
     std::pair<std::string, int> currentTime;
 
+    /** container for printing the contents of the help and help <cmd> functions */
     std::map<std::string, std::pair<std::string, std::string>> helpMap = {
             {"help",       {"help",                                  "list all available commands"}},
             {"help <cmd>", {"help <cmd>",                            "output help for the specified command"}},

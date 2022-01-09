@@ -1,12 +1,11 @@
 #include "AdvisorMain.h"
 #include "CSVReader.h"
+#include "Engine.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
-AdvisorMain::AdvisorMain() {
-
-}
+AdvisorMain::AdvisorMain() = default;
 
 std::string AdvisorMain::readUserCommand() {
     std::string line;
@@ -116,9 +115,9 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
 
     double price;
     if (min_or_max == "min")
-        price = OrderBook::getLowPrice(orders);
+        price = Engine::getLowPrice(orders);
     else if (min_or_max == "max")
-        price = OrderBook::getHighPrice(orders);
+        price = Engine::getHighPrice(orders);
     else
         throw std::invalid_argument("Invalid argument for <min/max>");
 
@@ -170,7 +169,7 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
     std::vector<OrderBookEntry> ordersBack;
     ordersBack = std::vector<OrderBookEntry>(orders.begin() + timeStepsSkip, orders.begin() + timeStepsBack);
 
-    double calculatedAvg = OrderBook::calculateAveragePriceOfOrders(ordersBack);
+    double calculatedAvg = Engine::calculateAveragePriceOfOrders(ordersBack);
     std::cout << BOTPROMPT << "The average " << product << " " << orderType << " price over the last " << timeStepsBack
               << " timesteps was " << calculatedAvg << std::endl;
 }
@@ -205,7 +204,7 @@ void AdvisorMain::printAllCurrentOrdersOfType(std::string orderType) {
                   << currentTime.first << std::endl;
     } else {
         for (const OrderBookEntry &e: orders) {
-            
+
         }
     }
 }

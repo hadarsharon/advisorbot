@@ -12,7 +12,7 @@
 class OrderBook {
 public:
     /** construct, reading a csv data file */
-    explicit OrderBook(std::string filename);
+    explicit OrderBook(const std::string &filename);
 
     /** return vector of Orders according to the sent filters (if supplied, else all products/timestamps are used) */
     std::vector<OrderBookEntry>
@@ -28,19 +28,7 @@ public:
     bool checkProductExists(std::string product);
 
     /** given a certain order type (string value), check if it is a valid one based on the Enum */
-    bool isValidOrderType(const std::string &orderType);
-
-    /** get maximal price in vector of orders */
-    static double getHighPrice(std::vector<OrderBookEntry> &orders);
-
-    /** get minimal price in vector of orders */
-    static double getLowPrice(std::vector<OrderBookEntry> &orders);
-
-    /** compare two timestamp strings (for sorting and the like) */
-    static bool compareTimestamps(const std::string &t1, const std::string &t2);
-
-    /** given a vector of orders, calculate and return the average price */
-    static double calculateAveragePriceOfOrders(const std::vector<OrderBookEntry> &orders);
+    bool isValidOrderType(const std::string &orderType) const;
 
     /** getter for the products vector */
     const std::vector<std::string> &getProducts() const;
@@ -61,6 +49,7 @@ private:
     /** populate vector of all timestamps in the dataset */
     std::vector<std::string> populateTimestamps();
 
+    /** vectors for storing specific parts of CSV data in memory for easy and fast access */
     std::vector<OrderBookEntry> orders;
     std::vector<std::string> products;
     std::vector<std::string> timestamps;

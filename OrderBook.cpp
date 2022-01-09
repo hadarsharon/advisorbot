@@ -1,11 +1,12 @@
 #include "OrderBook.h"
 #include "CSVReader.h"
+#include "Engine.h"
 #include <map>
 #include <utility>
 #include <algorithm>
 
-OrderBook::OrderBook(std::string filename) {
-    orders = CSVReader::readCSV(std::move(filename));
+OrderBook::OrderBook(const std::string &filename) {
+    orders = CSVReader::readCSV(filename);
     products = populateProducts();
     timestamps = populateTimestamps();
 }
@@ -22,10 +23,6 @@ std::vector<std::string> OrderBook::populateProducts() {
     return products;
 }
 
-bool OrderBook::compareTimestamps(const std::string &t1, const std::string &t2) {
-    return t1 < t2;
-}
-
 std::vector<std::string> OrderBook::populateTimestamps() {
     std::map<std::string, bool> timeMap;
     for (const OrderBookEntry &e: orders) {
@@ -35,7 +32,7 @@ std::vector<std::string> OrderBook::populateTimestamps() {
     for (auto const &e: timeMap) {
         timestamps.push_back(e.first);
     }
-    std::sort(timestamps.begin(), timestamps.end(), compareTimestamps);
+    std::sort(timestamps.begin(), timestamps.end(), Engine::compareTimestamps);
     return timestamps;
 }
 
@@ -51,22 +48,6 @@ OrderBook::getOrders(OrderBookType type, const std::string &product, const std::
             orders_sub.push_back(e);
     }
     return orders_sub;
-}
-
-double OrderBook::getHighPrice(std::vector<OrderBookEntry> &orders) {
-    double max = orders[0].price;
-    for (const OrderBookEntry &e: orders) {
-        if (e.price > max) max = e.price;
-    }
-    return max;
-}
-
-double OrderBook::getLowPrice(std::vector<OrderBookEntry> &orders) {
-    double min = orders[0].price;
-    for (const OrderBookEntry &e: orders) {
-        if (e.price < min) min = e.price;
-    }
-    return min;
 }
 
 std::string OrderBook::getEarliestTime() {
@@ -102,18 +83,7 @@ bool OrderBook::checkProductExists(std::string product) {
     return std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; });
 }
 
-bool OrderBook::isValidOrderType(const std::string &orderType) {
+bool OrderBook::isValidOrderType(const std::string &orderType) const {
     return orderBookTypes.count(orderType) > 0;
 }
 
-double OrderBook::calculateAveragePriceOfOrders(const std::vector<OrderBookEntry> &orders) {
-    if (orders.empty())
-        return 0;
-
-    double acc = 0;
-    for (const OrderBookEntry &e: orders) {
-        acc += e.price;
-    }
-
-    return acc / (double) orders.size();
-}
