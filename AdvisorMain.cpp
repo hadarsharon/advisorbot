@@ -2,6 +2,7 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <vector>
+#include <exception>
 
 AdvisorMain::AdvisorMain() {
 
@@ -18,7 +19,7 @@ std::string AdvisorMain::readUserCommand() {
 
 void AdvisorMain::handleUserCommand(std::string &userCommand) {
     std::vector<std::string> cmd = CSVReader::tokenise(userCommand, ' ');
-    if (cmd.empty()) {
+    if (cmd.empty()) {  // TODO: move to a different block?
         std::cout << BOTPROMPT << "Empty input! Please enter a command: " << std::endl;
         printHelp();
         return;
@@ -32,10 +33,14 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
             std::cout << BOTPROMPT << "Invalid argument to 'help': " << cmd[1] << " (unknown command)" << std::endl;
     } else if (cmd[0] == "prod") {
         printAvailableProducts();
+    } else if (cmd[0] == "min") {
+
     } else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
-        std::cout << BOTPROMPT << "Bad choice man" << std::endl;
+        std::cout << BOTPROMPT << "Invalid command." << std::endl;
+        printHelp();
+        throw std::invalid_argument("Invalid command"); // TODO: catch
     }
 }
 
@@ -77,7 +82,7 @@ void AdvisorMain::printAvailableProducts() {
 }
 
 void AdvisorMain::printProductMinOfType(std::string product, OrderBookType type) {
-    return 0;
+
 }
 
 double AdvisorMain::getProductMaxOfType(std::string product, std::string type) {
