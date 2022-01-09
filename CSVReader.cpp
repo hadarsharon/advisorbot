@@ -7,16 +7,19 @@ CSVReader::CSVReader() = default;
 
 std::vector<OrderBookEntry> CSVReader::readCSV(const std::string &csvFilename) {
     std::vector<OrderBookEntry> entries;
-    std::ifstream csvFile{csvFilename};
-    std::string line;
-    if (csvFile.is_open()) {
-        while (std::getline(csvFile, line)) {
-            try {
-                OrderBookEntry obe = stringsToOBE(tokenise(line, ','));
-                entries.push_back(obe);
-            } catch (const std::exception &e) {
-                std::cout << "CSVReader::readCSV bad data" << std::endl;
-            }
+    FILE *fp;
+    char line_buffer[1024];
+    fp = fopen(csvFilename.c_str(), "r");
+    if (fp == nullptr) {
+        std::cout << "Couldn't open CSV File: " << csvFilename << std::endl;
+        throw std::runtime_error("Couldn't open CSV File!");
+    }
+    while (fgets(line_buffer, 1024, fp) != nullptr) {
+        try {
+            OrderBookEntry obe = stringsToOBE(tokenise(line_buffer, ','));
+            entries.push_back(obe);
+        } catch (const std::exception &e) {
+            std::cout << "CSVReader::readCSV bad data - " << e.what() << std::endl;
         }
     }
     std::cout << "CSVReader::readCSV read " << entries.size() << " entries" << std::endl;
@@ -42,7 +45,7 @@ std::vector<std::string> CSVReader::tokenise(const std::string &csvLine, char se
 OrderBookEntry CSVReader::stringsToOBE(std::vector<std::string> tokens) {
     double price;
     if (tokens.size() != 5) { // bad
-        std::cout << "Bad line" << std::endl;
+        std::cout << "Bad line, expected 5 tokens, got: " << tokens.size() << std::endl;
         throw std::exception{};
     }
     // we have 5 tokens
