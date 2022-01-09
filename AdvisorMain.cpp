@@ -157,14 +157,14 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
 
     int timeStepsBack, timeStepsSkip;
     if (timeSteps > currentTime.second) {
-        std::cout << BOTPROMPT << "number of timesteps (" << timeSteps << ") is too far back." << std::endl;
-        std::cout << BOTPROMPT << "current step is " << currentTime.second << ", therefore the maximum amount of "
-                  << currentTime.second << "timesteps will be used." << std::endl;
-        timeStepsBack = currentTime.second;
+        timeStepsBack = std::max(currentTime.second, 1);
         timeStepsSkip = 0;
+        std::cout << BOTPROMPT << "number of timesteps (" << timeSteps << ") is too far back." << std::endl;
+        std::cout << BOTPROMPT << "current step is " << timeStepsBack << ", therefore the maximum amount of "
+                  << timeStepsBack << " timesteps will be used." << std::endl;
     } else {
         timeStepsBack = timeSteps;
-        timeStepsSkip = timeSteps - currentTime.second;
+        timeStepsSkip = std::max(currentTime.second - timeSteps, 0);
     }
 
     std::vector<OrderBookEntry> ordersBack;
