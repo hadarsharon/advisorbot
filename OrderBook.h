@@ -22,8 +22,10 @@ public:
     /** returns the next time after the sent time in the orderbook. If there is no next timestamp, wraps around to the start */
     std::string getNextTime(const std::string &timestamp);
 
+    /** get maximal price in vector of orders */
     static double getHighPrice(std::vector<OrderBookEntry> &orders);
 
+    /** get minimal price in vector of orders */
     static double getLowPrice(std::vector<OrderBookEntry> &orders);
 
     /** getter for the products vector */
@@ -31,7 +33,7 @@ public:
 
 private:
     /** populate vector of all known products in the dataset */
-    std::vector<std::string> populateKnownProducts();
+    std::vector<std::string> populateProducts();
 
     std::vector<OrderBookEntry> orders;
 

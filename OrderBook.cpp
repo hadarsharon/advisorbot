@@ -5,10 +5,10 @@
 
 OrderBook::OrderBook(std::string filename) {
     orders = CSVReader::readCSV(std::move(filename));
-    products = populateKnownProducts();
+    products = populateProducts();
 }
 
-std::vector<std::string> OrderBook::populateKnownProducts() {
+std::vector<std::string> OrderBook::populateProducts() {
     std::map<std::string, bool> prodMap;
     for (const OrderBookEntry &e: orders) {
         prodMap[e.product] = true;
