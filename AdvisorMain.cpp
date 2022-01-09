@@ -36,6 +36,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         printProductMinMaxOfType(cmd);
     } else if (cmd[0] == "avg") {
         printProductAvgOfTypeOverTimesteps(cmd);
+    } else if (cmd[0] == "predict") {
+        predictProductNextMaxMinOfType(cmd);
     } else if (cmd[0] == "time") {
         printTime();
     } else if (cmd[0] == "step") {
@@ -183,8 +185,38 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
               << " timesteps was " << calculatedAvg << std::endl;
 }
 
-double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type) {
-    return 0;
+void AdvisorMain::predictProductNextMaxMinOfType(const std::vector<std::string> &cmd) {
+    std::string minOrMax = cmd[1];
+    std::string product = cmd[2];
+    std::string orderType = cmd[3];
+
+    if (minOrMax != "min" && minOrMax != "max")
+        throw std::invalid_argument("Invalid argument for <min/max>");
+
+    // verify product passed by user actually exists
+    if (!orderBook.checkProductExists(product)) {
+        std::cout << "Unknown product: " << product << std::endl;
+        throw std::invalid_argument("Unknown product");
+    }
+
+    // verify order type passed by user is a valid one
+    OrderBookType orderBookType;
+    if (orderBook.isValidOrderType(orderType)) {
+        orderBookType = orderBook.orderBookTypes[orderType];
+    } else {
+        std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
+        throw std::invalid_argument("Invalid argument for <bid/ask>");
+    }
+
+    std::vector<std::vector<OrderBookEntry>> ordersPerTimestep;
+    for (int i = 0; i <= currentTime.second; i++) {
+        ordersPerTimestep.push_back(orderBook.getOrders(orderBookType, product, orderBook.getTimestamps()[i]));
+    }
+
+    double predicted = Calculator::calculateAverageMinMaxOverTimesteps(ordersPerTimestep, minOrMax);
+
+    std::cout << BOTPROMPT << "The predicted " << minOrMax << " " << orderType << " price of " << product
+              << "for the next time step is " << predicted << std::endl;
 }
 
 void AdvisorMain::printTime() const {

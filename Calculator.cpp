@@ -32,3 +32,31 @@ double Calculator::calculateAveragePriceOfOrders(const std::vector<OrderBookEntr
 
     return acc / (double) orders.size();
 }
+
+double Calculator::calculateAveragePriceOfOrders(const std::vector<double> &orders) {
+    if (orders.empty())
+        return 0;
+
+    double acc = 0;
+    for (const double e: orders) {
+        acc += e;
+    }
+
+    return acc / (double) orders.size();
+}
+
+double Calculator::calculateAverageMinMaxOverTimesteps(const std::vector<std::vector<OrderBookEntry>> &ordersPerTime,
+                                                       const std::string &minOrMax) {
+    std::vector<double> minOrMaxPrices;
+
+    for (std::vector<OrderBookEntry> orders: ordersPerTime) {
+        if (minOrMax == "min")
+            minOrMaxPrices.push_back(getLowPrice(orders));
+        else if (minOrMax == "max")
+            minOrMaxPrices.push_back(getHighPrice(orders));
+    }
+
+    return calculateAveragePriceOfOrders(minOrMaxPrices);
+}
+
+

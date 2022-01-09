@@ -43,8 +43,7 @@ private:
     void printProductAvgOfTypeOverTimesteps(const std::vector<std::string> &cmd);
 
     /** C7: predict - predict max or min ask or bid for the sent product for the next time step */
-    // TODO: use Enum for type and perhaps also max or min
-    double predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type);
+    void predictProductNextMaxMinOfType(const std::vector<std::string> &cmd);
 
     /** C8: time - state current time in dataset, i.e. which timeframe are we looking at */
     void printTime() const;
