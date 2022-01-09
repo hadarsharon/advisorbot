@@ -66,11 +66,6 @@ private:
             {"step",       {"step",                                  "move to the next time step"}}
     };
 
-    std::map<std::string, OrderBookType> orderBookTypes = {
-            {"ask", OrderBookType::ask},
-            {"bid", OrderBookType::bid}
-    };
-
     OrderBook orderBook{CSVDATAFILE};
 };
 

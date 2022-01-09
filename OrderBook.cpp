@@ -2,6 +2,7 @@
 #include "CSVReader.h"
 #include <map>
 #include <utility>
+#include <algorithm>
 
 OrderBook::OrderBook(std::string filename) {
     orders = CSVReader::readCSV(std::move(filename));
@@ -78,4 +79,16 @@ std::string OrderBook::getNextTime(const std::string &timestamp) {
 
 const std::vector<std::string> &OrderBook::getProducts() const {
     return products;
+}
+
+const std::vector<std::string> &OrderBook::getTimestamps() const {
+    return timestamps;
+}
+
+bool OrderBook::checkProductExists(std::string product) {
+    return std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; });
+}
+
+bool OrderBook::isValidOrderType(std::string orderType) {
+    return orderBookTypes.count(orderType) > 0;
 }

@@ -2,7 +2,6 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <vector>
-#include <algorithm>
 
 AdvisorMain::AdvisorMain() {
 
@@ -98,12 +97,12 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
 
     OrderBookType orderBookType;
     auto products = orderBook.getProducts();
-    if (!std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; })) {
+    if (!orderBook.checkProductExists(product)) {
         std::cout << "Unknown product: " << product << std::endl;
         throw std::invalid_argument("Unknown product");
     }
 
-    if (orderBookTypes.count(orderType) > 0) {
+    if (orderBook.isValidOrderType(orderType)) {
         orderBookType = orderBookTypes[orderType];
     } else {
         std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
@@ -125,7 +124,17 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
 }
 
 void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::string> &cmd) {
+    if (cmd.size() < 4) // must be something like 'avg <product> <ask/bid> <timesteps>'
+        throw std::invalid_argument("Invalid arguments to 'avg'");
 
+    std::string product = cmd[1];
+    std::string orderType = cmd[2];
+    try {
+        int timesteps = std::stoi(cmd[3]);
+    } catch (const std::exception &e) {
+        std::cout << "Bad value for 'timesteps' when calling 'avg': " << cmd[3] << std::endl;
+        throw;
+    }
 }
 
 double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type) {
