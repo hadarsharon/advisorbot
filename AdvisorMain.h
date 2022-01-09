@@ -40,8 +40,7 @@ private:
     void printProductMinMaxOfType(const std::vector<std::string> &cmd);
 
     /** C6: avg - compute average ask or bid for the sent product over the sent number of time steps  */
-    // TODO: verify type of timesteps, use Enum for type
-    double getProductAvgOfTypeOverTimesteps(std::string product, std::string type, int timesteps);
+    void printProductAvgOfTypeOverTimesteps(const std::vector<std::string> &cmd);
 
     /** C7: predict - predict max or min ask or bid for the sent product for the next time step */
     // TODO: use Enum for type and perhaps also max or min
@@ -71,8 +70,6 @@ private:
             {"ask", OrderBookType::ask},
             {"bid", OrderBookType::bid}
     };
-
-    std::vector<std::string> products;
 
     OrderBook orderBook{CSVDATAFILE};
 };

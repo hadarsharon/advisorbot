@@ -50,7 +50,6 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
 
 void AdvisorMain::init() {
     currentTime = orderBook.getEarliestTime();
-    products = orderBook.getKnownProducts();
     std::string userCommand;
     do {
         std::cout << std::endl;
@@ -77,7 +76,7 @@ void AdvisorMain::printHelpForCmd(const std::string &cmd) {
 
 void AdvisorMain::printAvailableProducts() {
     bool first = true;
-    for (const std::string &p: products) {
+    for (const std::string &p: orderBook.getProducts()) {
         if (!first) {
             std::cout << ',';
         } else {
@@ -98,6 +97,7 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
     std::string orderType = cmd[2];
 
     OrderBookType orderBookType;
+    auto products = orderBook.getProducts();
     if (!std::any_of(products.begin(), products.end(), [&product](const std::string &p) { return p == product; })) {
         std::cout << "Unknown product: " << product << std::endl;
         throw std::invalid_argument("Unknown product");
@@ -124,8 +124,8 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
               << std::endl;
 }
 
-double AdvisorMain::getProductAvgOfTypeOverTimesteps(std::string product, std::string type, int timesteps) {
-    return 0;
+void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::string> &cmd) {
+
 }
 
 double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type) {
