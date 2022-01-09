@@ -35,11 +35,11 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         printAvailableProducts();
     } else if (cmd[0] == "min" || cmd[0] == "max") {
         printProductMinMaxOfType(cmd);
-    }
-    else if (cmd[0] == "time") {
+    } else if (cmd[0] == "time") {
         printTime();
-    }
-    else if (cmd[0] == "exit") {
+    } else if (cmd[0] == "step") {
+        moveToNextTimestep();
+    } else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
         std::cout << BOTPROMPT << "Invalid command." << std::endl;
@@ -78,10 +78,12 @@ void AdvisorMain::printHelpForCmd(const std::string &cmd) {
 void AdvisorMain::printAvailableProducts() {
     bool first = true;
     for (const std::string &p: products) {
-        if (!first)
+        if (!first) {
             std::cout << ',';
-        else
+        } else {
+            std::cout << BOTPROMPT;
             first = false;
+        }
         std::cout << p;
     }
     std::cout << std::endl;
@@ -118,7 +120,8 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
     else
         throw std::invalid_argument("Invalid argument for <min/max>");
 
-    std::cout << "The " << min_or_max << " " << orderType << " for " << product << " is " << price << std::endl;
+    std::cout << BOTPROMPT << "The " << min_or_max << " " << orderType << " for " << product << " is " << price
+              << std::endl;
 }
 
 double AdvisorMain::getProductAvgOfTypeOverTimesteps(std::string product, std::string type, int timesteps) {
@@ -134,7 +137,8 @@ void AdvisorMain::printTime() {
 }
 
 void AdvisorMain::moveToNextTimestep() {
-
+    currentTime = orderBook.getNextTime(currentTime);
+    std::cout << BOTPROMPT << "now at " << currentTime << std::endl;
 }
 
 void AdvisorMain::terminateGracefully() {
