@@ -36,8 +36,8 @@ public:
     /** get minimal price in vector of orders */
     static double getLowPrice(std::vector<OrderBookEntry> &orders);
 
-    /** compare two timestamp strings */
-    static bool compareTimestamps(const std::string& t1, const std::string& t2);
+    /** compare two timestamp strings (for sorting and the like) */
+    static bool compareTimestamps(const std::string &t1, const std::string &t2);
 
     /** getter for the products vector */
     const std::vector<std::string> &getProducts() const;
