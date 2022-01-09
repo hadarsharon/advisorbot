@@ -4,6 +4,8 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <ios>
+#include <limits>
 
 AdvisorMain::AdvisorMain() = default;
 
@@ -18,10 +20,10 @@ std::string AdvisorMain::readUserCommand() {
 
 void AdvisorMain::handleUserCommand(std::string &userCommand) {
     std::vector<std::string> cmd = CSVReader::tokenise(userCommand, ' ');
-    if (cmd.empty()) {  // TODO: move to a different block?
+    if (cmd.empty()) {
         std::cout << BOTPROMPT << "Empty input! Please enter a command: " << std::endl;
         printHelp();
-        return;
+        throw std::invalid_argument("Empty input, no command specified");
     }
     if (cmd[0] == "help") {
         if (cmd.size() == 1)
@@ -55,16 +57,29 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
     }
 }
 
-void AdvisorMain::init() {
-    currentTime = {orderBook.getEarliestTime(), 0}; // program is always initialized at the earliest time step
+void AdvisorMain::userPrompt() {
     std::string userCommand;
+
     do { // keep asking for user input until user chooses to exit
         std::cout << std::endl;
-        std::cout << BOTPROMPT << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
+        std::cout << BOTPROMPT
+                  << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
                   << std::endl;
+
         userCommand = readUserCommand();
         handleUserCommand(userCommand);
     } while (userCommand != "exit");
+}
+
+
+void AdvisorMain::init() {
+    currentTime = {orderBook.getEarliestTime(), 0}; // program is always initialized at the earliest time step
+    try {
+        userPrompt();
+    } catch (const std::invalid_argument &e) {  // if bad command or arguments passed, let user retry
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // flush input before retry
+        userPrompt();
+    }
 }
 
 void AdvisorMain::printHelp() {

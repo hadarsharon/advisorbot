@@ -21,6 +21,9 @@ private:
     /** Terminate the program gracefully upon user signal */
     static void terminateGracefully();
 
+    /** Prompt for user interaction and/or input */
+    void userPrompt();
+
     /** Get user input for further processing */
     static std::string readUserCommand();
 

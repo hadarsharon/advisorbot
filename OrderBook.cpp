@@ -56,7 +56,7 @@ std::string OrderBook::getEarliestTime() {
 
 std::pair<std::string, int> OrderBook::getNextTime(const std::string &timestamp) {
     std::string nextTimestamp;
-    int timestampIndex;
+    unsigned int timestampIndex;
     for (int i = 0; i < timestamps.size(); ++i) {
         if (timestamps[i] > timestamp) {
             nextTimestamp = timestamps[i];
