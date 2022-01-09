@@ -29,8 +29,14 @@ public:
     /** maps string values to Enum type */
     static OrderBookType stringToOrderBookType(const std::string &s);
 
+    /** reverts Enum type to string representation */
+    static std::string orderBookTypeToString(OrderBookType t);
+
     /** helper method to compare two entries by their Timestamp values */
     static bool compareByTimestampAsc(OrderBookEntry &e1, OrderBookEntry &e2);
+
+    /** generate a string representation of the OrderBookEntry */
+    std::string toString() const;
 
     double price;
     std::string timestamp;

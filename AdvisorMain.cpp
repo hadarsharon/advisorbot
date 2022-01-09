@@ -40,6 +40,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         printTime();
     } else if (cmd[0] == "step") {
         moveToNextTimestep();
+    } else if (cmd[0] == "list") {
+        printAllCurrentOrdersOfType(cmd[1]);
     } else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
@@ -197,7 +199,7 @@ void AdvisorMain::terminateGracefully() {
     exit(0);
 }
 
-void AdvisorMain::printAllCurrentOrdersOfType(const std::string& orderType) {
+void AdvisorMain::printAllCurrentOrdersOfType(const std::string &orderType) {
     if (!orderBook.isValidOrderType(orderType)) {
         std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
         throw std::invalid_argument("Invalid argument for <bid/ask>");
@@ -207,11 +209,12 @@ void AdvisorMain::printAllCurrentOrdersOfType(const std::string& orderType) {
     orders = orderBook.getOrders(OrderBookEntry::stringToOrderBookType(orderType), "", currentTime.first);
 
     if (orders.empty()) {
-        std::cout << BOTPROMPT << "No orders of type " << orderType << " found for current time step: "
-                  << currentTime.first << std::endl;
+        std::cout << BOTPROMPT << "No " << orderType << "s found for current time step: ("
+                  << currentTime.first << ")." << std::endl;
     } else {
+        std::cout << BOTPROMPT << orderType << "s for current time step (" << currentTime.first << "):" << std::endl;
         for (const OrderBookEntry &e: orders) {
-
+            std::cout << e.toString() << std::endl;
         }
     }
 }

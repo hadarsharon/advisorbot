@@ -11,3 +11,17 @@ OrderBookType OrderBookEntry::stringToOrderBookType(const std::string &s) {
 bool OrderBookEntry::compareByTimestampAsc(OrderBookEntry &e1, OrderBookEntry &e2) {
     return e1.timestamp < e2.timestamp;
 }
+
+std::string OrderBookEntry::orderBookTypeToString(OrderBookType t) {
+    if (t == OrderBookType::ask)
+        return "ask";
+    if (t == OrderBookType::bid)
+        return "bid";
+    return "unknown";
+}
+
+std::string OrderBookEntry::toString() const {
+    std::string s;
+    s += timestamp + " | " + product + " | " + orderBookTypeToString(orderType) + " | " + std::to_string(price);
+    return s;
+}
