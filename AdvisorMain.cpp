@@ -41,6 +41,8 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
     } else if (cmd[0] == "step") {
         moveToNextTimestep();
     } else if (cmd[0] == "list") {
+        if (cmd.size() < 2)
+            throw std::invalid_argument("Invalid argument for list <bid/ask>");
         printAllCurrentOrdersOfType(cmd[1]);
     } else if (cmd[0] == "exit") {
         terminateGracefully();
@@ -200,9 +202,9 @@ void AdvisorMain::terminateGracefully() {
 }
 
 void AdvisorMain::printAllCurrentOrdersOfType(const std::string &orderType) {
-    if (!orderBook.isValidOrderType(orderType)) {
-        std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
-        throw std::invalid_argument("Invalid argument for <bid/ask>");
+    if (orderType.empty() || !orderBook.isValidOrderType(orderType)) {
+        std::cout << "Invalid argument for list <bid/ask>: " << orderType << std::endl;
+        throw std::invalid_argument("Invalid argument for list <bid/ask>");
     }
 
     std::vector<OrderBookEntry> orders;
