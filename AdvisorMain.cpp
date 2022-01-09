@@ -61,6 +61,7 @@ void AdvisorMain::userPrompt() {
     std::string userCommand;
 
     do { // keep asking for user input until user chooses to exit
+        userCommand.clear();
         std::cout << std::endl;
         std::cout << BOTPROMPT
                   << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
@@ -78,8 +79,9 @@ void AdvisorMain::init() {
     try {
         userPrompt();
     } catch (const std::invalid_argument &e) {  // if bad command or arguments passed, let user retry
+        // flush input before retry
         std::cin.clear();
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n'); // flush input before retry
+        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
         std::cout << BOTPROMPT << e.what() << std::endl << std::endl; // show user what went wrong
         init();
     }
