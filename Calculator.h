@@ -1,6 +1,6 @@
 #pragma once
-#ifndef ADVISORBOT_ENGINE_H
-#define ADVISORBOT_ENGINE_H
+#ifndef ADVISORBOT_CALCULATOR_H
+#define ADVISORBOT_CALCULATOR_H
 
 
 #include <string>
@@ -9,7 +9,7 @@
 #include "OrderBookEntry.h"
 #include "CSVReader.h"
 
-class Engine {
+class Calculator {
 
 public:
 /** compare two timestamp strings (for sorting and the like) */
@@ -26,4 +26,4 @@ public:
 };
 
 
-#endif //ADVISORBOT_ENGINE_H
+#endif //ADVISORBOT_CALCULATOR_H

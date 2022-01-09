@@ -1,6 +1,6 @@
 #include "AdvisorMain.h"
 #include "CSVReader.h"
-#include "Engine.h"
+#include "Calculator.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -117,9 +117,9 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
 
     double price;
     if (min_or_max == "min")
-        price = Engine::getLowPrice(orders);
+        price = Calculator::getLowPrice(orders);
     else if (min_or_max == "max")
-        price = Engine::getHighPrice(orders);
+        price = Calculator::getHighPrice(orders);
     else
         throw std::invalid_argument("Invalid argument for <min/max>");
 
@@ -141,10 +141,13 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
         throw;
     }
 
+    // verify product passed by user actually exists
     if (!orderBook.checkProductExists(product)) {
         std::cout << "Unknown product: " << product << std::endl;
         throw std::invalid_argument("Unknown product");
     }
+
+    // verify order type passed by user is a valid one
     OrderBookType orderBookType;
     if (orderBook.isValidOrderType(orderType)) {
         orderBookType = orderBook.orderBookTypes[orderType];
@@ -171,7 +174,7 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
     std::vector<OrderBookEntry> ordersBack;
     ordersBack = std::vector<OrderBookEntry>(orders.begin() + timeStepsSkip, orders.begin() + timeStepsBack);
 
-    double calculatedAvg = Engine::calculateAveragePriceOfOrders(ordersBack);
+    double calculatedAvg = Calculator::calculateAveragePriceOfOrders(ordersBack);
     std::cout << BOTPROMPT << "The average " << product << " " << orderType << " price over the last " << timeStepsBack
               << " timesteps was " << calculatedAvg << std::endl;
 }
@@ -180,7 +183,7 @@ double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string 
     return 0;
 }
 
-void AdvisorMain::printTime() {
+void AdvisorMain::printTime() const {
     std::cout << BOTPROMPT << currentTime.first << std::endl;
 }
 
@@ -194,13 +197,15 @@ void AdvisorMain::terminateGracefully() {
     exit(0);
 }
 
-void AdvisorMain::printAllCurrentOrdersOfType(std::string orderType) {
+void AdvisorMain::printAllCurrentOrdersOfType(const std::string& orderType) {
     if (!orderBook.isValidOrderType(orderType)) {
         std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
         throw std::invalid_argument("Invalid argument for <bid/ask>");
     }
+
     std::vector<OrderBookEntry> orders;
     orders = orderBook.getOrders(OrderBookEntry::stringToOrderBookType(orderType), "", currentTime.first);
+
     if (orders.empty()) {
         std::cout << BOTPROMPT << "No orders of type " << orderType << " found for current time step: "
                   << currentTime.first << std::endl;

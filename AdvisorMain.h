@@ -47,13 +47,13 @@ private:
     double predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type);
 
     /** C8: time - state current time in dataset, i.e. which timeframe are we looking at */
-    void printTime();
+    void printTime() const;
 
     /** C9: step - move to next time step */
     void moveToNextTimestep();
 
     /** (EXTRA COMMAND - MY IMPLEMENTATION) C10: list - list all asks/bids that happened in the current time step */
-    void printAllCurrentOrdersOfType(std::string orderType);
+    void printAllCurrentOrdersOfType(const std::string& orderType);
 
     /** current timestamp along with its index in the OrderBook object assigned to this instance (orderBook) */
     std::pair<std::string, int> currentTime;

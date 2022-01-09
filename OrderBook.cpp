@@ -1,6 +1,6 @@
 #include "OrderBook.h"
 #include "CSVReader.h"
-#include "Engine.h"
+#include "Calculator.h"
 #include <map>
 #include <utility>
 #include <algorithm>
@@ -32,7 +32,7 @@ std::vector<std::string> OrderBook::populateTimestamps() {
     for (auto const &e: timeMap) {
         timestamps.push_back(e.first);
     }
-    std::sort(timestamps.begin(), timestamps.end(), Engine::compareTimestamps);
+    std::sort(timestamps.begin(), timestamps.end(), Calculator::compareTimestamps);
     return timestamps;
 }
 
