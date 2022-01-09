@@ -26,8 +26,10 @@ public:
         orderType(_orderType) {
     }
 
+    /** maps string values to Enum type */
     static OrderBookType stringToOrderBookType(const std::string &s);
 
+    /** helper method to compare two entries by their Timestamp values */
     static bool compareByTimestampAsc(OrderBookEntry &e1, OrderBookEntry &e2);
 
     double price;
