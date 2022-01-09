@@ -21,7 +21,7 @@ public:
 
     /** returns the next time after the sent time in the orderbook. If there is no next timestamp, wraps around to the start */
     std::string getNextTime(const std::string &timestamp);
-    
+
     static double getHighPrice(std::vector<OrderBookEntry> &orders);
 
     static double getLowPrice(std::vector<OrderBookEntry> &orders);
