@@ -105,3 +105,15 @@ bool OrderBook::checkProductExists(std::string product) {
 bool OrderBook::isValidOrderType(const std::string &orderType) {
     return orderBookTypes.count(orderType) > 0;
 }
+
+double OrderBook::calculateAveragePriceOfOrders(const std::vector<OrderBookEntry> &orders) {
+    if (orders.empty())
+        return 0;
+
+    double acc = 0;
+    for (const OrderBookEntry &e: orders) {
+        acc += e.price;
+    }
+
+    return acc / (double) orders.size();
+}

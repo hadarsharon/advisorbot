@@ -2,6 +2,7 @@
 #include "CSVReader.h"
 #include <iostream>
 #include <vector>
+#include <algorithm>
 
 AdvisorMain::AdvisorMain() {
 
@@ -129,8 +130,9 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
 
     std::string product = cmd[1];
     std::string orderType = cmd[2];
+    int timeSteps;
     try {
-        int timesteps = std::stoi(cmd[3]);
+        timeSteps = std::stoi(cmd[3]);
     } catch (const std::exception &e) {
         std::cout << "Bad value for 'timesteps' when calling 'avg': " << cmd[3] << std::endl;
         throw;
@@ -149,6 +151,26 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
     }
 
     std::vector<OrderBookEntry> orders = orderBook.getOrders(orderBookType, product);
+    std::sort(orders.begin(), orders.end(), OrderBookEntry::compareByTimestampAsc);
+
+    int timeStepsBack, timeStepsSkip;
+    if (timeSteps > currentTime.second) {
+        std::cout << BOTPROMPT << "number of timesteps (" << timeSteps << ") is too far back." << std::endl;
+        std::cout << BOTPROMPT << "current step is " << currentTime.second << ", therefore the maximum amount of "
+                  << currentTime.second << "timesteps will be used." << std::endl;
+        timeStepsBack = currentTime.second;
+        timeStepsSkip = 0;
+    } else {
+        timeStepsBack = timeSteps;
+        timeStepsSkip = timeSteps - currentTime.second;
+    }
+
+    std::vector<OrderBookEntry> ordersBack;
+    ordersBack = std::vector<OrderBookEntry>(orders.begin() + timeStepsSkip, orders.begin() + timeStepsBack);
+
+    double calculatedAvg = OrderBook::calculateAveragePriceOfOrders(ordersBack);
+    std::cout << BOTPROMPT << "The average " << product << " " << orderType << " price over the last " << timeStepsBack
+              << " timesteps was " << calculatedAvg << std::endl;
 }
 
 double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type) {

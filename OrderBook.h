@@ -39,6 +39,9 @@ public:
     /** compare two timestamp strings (for sorting and the like) */
     static bool compareTimestamps(const std::string &t1, const std::string &t2);
 
+    /** given a vector of orders, calculate and return the average price */
+    static double calculateAveragePriceOfOrders(const std::vector<OrderBookEntry> &orders);
+
     /** getter for the products vector */
     const std::vector<std::string> &getProducts() const;
 
