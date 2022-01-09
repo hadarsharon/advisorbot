@@ -1,6 +1,6 @@
 #include "OrderBookEntry.h"
 
-OrderBookType OrderBookEntry::stringToOrderBookType(const std::string& s) {
+OrderBookType OrderBookEntry::stringToOrderBookType(const std::string &s) {
     if (s == "ask")
         return OrderBookType::ask;
     if (s == "bid")

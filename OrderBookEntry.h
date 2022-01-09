@@ -26,7 +26,7 @@ public:
         orderType(_orderType) {
     }
 
-    static OrderBookType stringToOrderBookType(const std::string& s);
+    static OrderBookType stringToOrderBookType(const std::string &s);
 
     static bool compareByTimestampAsc(OrderBookEntry &e1, OrderBookEntry &e2);
 
