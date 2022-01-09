@@ -53,7 +53,7 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
     } else {
         std::cout << BOTPROMPT << "Invalid command." << std::endl;
         printHelp();
-        throw std::invalid_argument("Invalid command"); // TODO: catch
+        throw std::invalid_argument("Invalid command");
     }
 }
 
