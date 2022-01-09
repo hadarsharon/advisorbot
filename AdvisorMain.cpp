@@ -95,15 +95,15 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
     std::string product = cmd[1];
     std::string orderType = cmd[2];
 
-    OrderBookType orderBookType;
     auto products = orderBook.getProducts();
     if (!orderBook.checkProductExists(product)) {
         std::cout << "Unknown product: " << product << std::endl;
         throw std::invalid_argument("Unknown product");
     }
 
+    OrderBookType orderBookType;
     if (orderBook.isValidOrderType(orderType)) {
-        orderBookType = orderBookTypes[orderType];
+        orderBookType = orderBook.orderBookTypes[orderType];
     } else {
         std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
         throw std::invalid_argument("Invalid argument for <bid/ask>");
@@ -134,6 +134,18 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
     } catch (const std::exception &e) {
         std::cout << "Bad value for 'timesteps' when calling 'avg': " << cmd[3] << std::endl;
         throw;
+    }
+
+    if (!orderBook.checkProductExists(product)) {
+        std::cout << "Unknown product: " << product << std::endl;
+        throw std::invalid_argument("Unknown product");
+    }
+    OrderBookType orderBookType;
+    if (orderBook.isValidOrderType(orderType)) {
+        orderBookType = orderBook.orderBookTypes[orderType];
+    } else {
+        std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
+        throw std::invalid_argument("Invalid argument for <bid/ask>");
     }
 }
 

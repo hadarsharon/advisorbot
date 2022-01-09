@@ -27,7 +27,7 @@ public:
     bool checkProductExists(std::string product);
 
     /** given a certain order type (string value), check if it is a valid one based on the Enum */
-    bool isValidOrderType(const std::string& orderType);
+    bool isValidOrderType(const std::string &orderType);
 
     /** get maximal price in vector of orders */
     static double getHighPrice(std::vector<OrderBookEntry> &orders);
@@ -41,18 +41,18 @@ public:
     /** getter for the timestamps vector */
     const std::vector<std::string> &getTimestamps() const;
 
+    /** mapping of valid order book types string values to their respective Enum value */
+    std::map<std::string, OrderBookType> orderBookTypes = {
+            {"ask", OrderBookType::ask},
+            {"bid", OrderBookType::bid}
+    };
+
 private:
     /** populate vector of all known products in the dataset */
     std::vector<std::string> populateProducts();
 
     /** populate vector of all timestamps in the dataset */
     std::vector<std::string> populateTimestamps();
-
-    /** mapping of valid order book types string values to their respective Enum value */
-    std::map<std::string, OrderBookType> orderBookTypes = {
-            {"ask", OrderBookType::ask},
-            {"bid", OrderBookType::bid}
-    };
 
     std::vector<OrderBookEntry> orders;
     std::vector<std::string> products;
