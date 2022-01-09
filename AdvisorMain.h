@@ -2,6 +2,7 @@
 #ifndef ADVISORBOT_ADVISORMAIN_H
 #define ADVISORBOT_ADVISORMAIN_H
 
+#define CSVDATAFILE "20200601.csv"
 #define BOTPROMPT "advisorbot> "
 #define USERPROMPT "user>"
 
@@ -73,9 +74,7 @@ private:
 
     std::vector<std::string> products;
 
-    OrderBook orderBook{"20200601.csv"};
-
-
+    OrderBook orderBook{CSVDATAFILE};
 };
 
 
