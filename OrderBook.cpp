@@ -2,9 +2,10 @@
 #include "CSVReader.h"
 #include <map>
 #include <algorithm>
+#include <utility>
 
 OrderBook::OrderBook(std::string filename) {
-    orders = CSVReader::readCSV(filename);
+    orders = CSVReader::readCSV(std::move(filename));
 }
 
 std::vector<std::string> OrderBook::getKnownProducts() {
@@ -13,6 +14,7 @@ std::vector<std::string> OrderBook::getKnownProducts() {
     for (const OrderBookEntry &e: orders) {
         prodMap[e.product] = true;
     }
+    products.reserve(prodMap.size());
     for (auto const &e: prodMap) {
         products.push_back(e.first);
     }

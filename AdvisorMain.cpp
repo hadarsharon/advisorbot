@@ -27,11 +27,11 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         if (cmd.size() == 1)
             printHelp();
         else if (helpMap.count(cmd[1]))
-            helpCmd(cmd[1]);
+            printHelpForCmd(cmd[1]);
         else
             std::cout << BOTPROMPT << "Invalid argument to 'help': " << cmd[1] << " (unknown command)" << std::endl;
     } else if (cmd[0] == "prod") {
-        listProducts();
+        printAvailableProducts();
     } else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
@@ -42,15 +42,12 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
 void AdvisorMain::init() {
     std::string userCommand;
     do {
+        std::cout << std::endl;
         std::cout << BOTPROMPT << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
                   << std::endl;
         userCommand = readUserCommand();
         handleUserCommand(userCommand);
     } while (userCommand != "exit");
-}
-
-void AdvisorMain::printMenu() {
-
 }
 
 void AdvisorMain::printHelp() {
@@ -62,12 +59,12 @@ void AdvisorMain::printHelp() {
     std::cout << "---------------------------" << std::endl;
 }
 
-void AdvisorMain::helpCmd(const std::string &cmd) {
+void AdvisorMain::printHelpForCmd(const std::string &cmd) {
     std::pair<std::string, std::string> cmdHelp = helpMap[cmd];
     std::cout << cmdHelp.first << " -> " << cmdHelp.second << std::endl;
 }
 
-void AdvisorMain::listProducts() {
+void AdvisorMain::printAvailableProducts() {
     bool first = true;
     for (const std::string &p: orderBook.getKnownProducts()) {
         if (!first)
@@ -79,7 +76,7 @@ void AdvisorMain::listProducts() {
     std::cout << std::endl;
 }
 
-double AdvisorMain::getProductMinOfType(std::string product, std::string type) {
+void AdvisorMain::printProductMinOfType(std::string product, OrderBookType type) {
     return 0;
 }
 
@@ -104,5 +101,6 @@ void AdvisorMain::moveToNextTimestep() {
 }
 
 void AdvisorMain::terminateGracefully() {
+    std::cout << "Exiting..." << std::endl;
     exit(0);
 }

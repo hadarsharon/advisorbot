@@ -17,25 +17,26 @@ public:
     void init();
 
 private:
-    void printMenu();
-
+    /** Terminate the program gracefully upon user signal */
     static void terminateGracefully();
 
+    /** Get user input for further processing */
     std::string readUserCommand();
 
+    /** Trigger commands based on user input */
     void handleUserCommand(std::string &userCommand);
 
     /** C1: help - List all available commands */
     void printHelp();
 
     /** C2: help cmd - Output help for the specified command */
-    void helpCmd(const std::string &cmd);
+    void printHelpForCmd(const std::string &cmd);
 
     /** C3: prod - List available products */
-    void listProducts();
+    void printAvailableProducts();
 
     /** C4: min - Find minimum bid or ask for product in current time step */
-    double getProductMinOfType(std::string product, std::string type);  // TODO: use Enum for type
+    void printProductMinOfType(std::string product, OrderBookType type);
 
     /** C5: max - Find maximum bid or ask for product in current time step */
     double getProductMaxOfType(std::string product, std::string type);  // TODO: use Enum for type
