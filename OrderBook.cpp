@@ -38,7 +38,11 @@ std::vector<OrderBookEntry>
 OrderBook::getOrders(OrderBookType type, const std::string &product, const std::string &timestamp) {
     std::vector<OrderBookEntry> orders_sub;
     for (const OrderBookEntry &e: orders) {
-        if (e.orderType == type && e.product == product && e.timestamp == timestamp)
+        if (
+                e.orderType == type &&
+                (product.empty() || e.product == product) &&  // only filter by product if given, else get all products
+                (timestamp.empty() || e.timestamp == timestamp) // ditto for timestamp
+                )
             orders_sub.push_back(e);
     }
     return orders_sub;
@@ -61,20 +65,24 @@ double OrderBook::getLowPrice(std::vector<OrderBookEntry> &orders) {
 }
 
 std::string OrderBook::getEarliestTime() {
-    return orders[0].timestamp;
+    return timestamps[0];
 }
 
-std::string OrderBook::getNextTime(const std::string &timestamp) {
+std::pair<std::string, int> OrderBook::getNextTime(const std::string &timestamp) {
     std::string nextTimestamp;
-    for (const std::string &t: timestamps) {
-        if (t > timestamp) {
-            nextTimestamp = t;
+    int timestampIndex;
+    for (int i = 0; i < timestamps.size(); ++i) {
+        if (timestamps[i] > timestamp) {
+            nextTimestamp = timestamps[i];
+            timestampIndex = i;
             break;
         }
     }
-    if (nextTimestamp.empty())
+    if (nextTimestamp.empty()) {
         nextTimestamp = timestamps[0];
-    return nextTimestamp;
+        timestampIndex = 0;
+    }
+    return {nextTimestamp, timestampIndex};
 }
 
 const std::vector<std::string> &OrderBook::getProducts() const {

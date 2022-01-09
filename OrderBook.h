@@ -14,14 +14,15 @@ public:
     /** construct, reading a csv data file */
     explicit OrderBook(std::string filename);
 
-    /** return vector of Orders according to the sent filters */
-    std::vector<OrderBookEntry> getOrders(OrderBookType type, const std::string &product, const std::string &timestamp);
+    /** return vector of Orders according to the sent filters (if supplied, else all products/timestamps are used) */
+    std::vector<OrderBookEntry>
+    getOrders(OrderBookType type, const std::string &product = "", const std::string &timestamp = "");
 
     /** returns the earliest time in the orderbook */
     std::string getEarliestTime();
 
     /** returns the next time after the sent time in the orderbook. If there is no next timestamp, wraps around to the start */
-    std::string getNextTime(const std::string &timestamp);
+    std::pair<std::string, int> getNextTime(const std::string &timestamp);
 
     /** given a certain product name, check if it exists in the dataset (for validity checks etc.) */
     bool checkProductExists(std::string product);

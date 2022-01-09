@@ -52,7 +52,8 @@ private:
     /** C9: step - move to next time step */
     void moveToNextTimestep();
 
-    std::string currentTime;
+    /** current timestamp along with its index in the OrderBook object assigned to this instance (orderBook) */
+    std::pair<std::string, int> currentTime;
 
     std::map<std::string, std::pair<std::string, std::string>> helpMap = {
             {"help",       {"help",                                  "list all available commands"}},

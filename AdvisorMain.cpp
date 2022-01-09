@@ -48,7 +48,7 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
 }
 
 void AdvisorMain::init() {
-    currentTime = orderBook.getEarliestTime();
+    currentTime = {orderBook.getEarliestTime(), 0};
     std::string userCommand;
     do {
         std::cout << std::endl;
@@ -109,7 +109,7 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
         throw std::invalid_argument("Invalid argument for <bid/ask>");
     }
 
-    std::vector<OrderBookEntry> orders = orderBook.getOrders(orderBookType, product, currentTime);
+    std::vector<OrderBookEntry> orders = orderBook.getOrders(orderBookType, product, currentTime.first);
 
     double price;
     if (min_or_max == "min")
@@ -147,6 +147,8 @@ void AdvisorMain::printProductAvgOfTypeOverTimesteps(const std::vector<std::stri
         std::cout << "Invalid argument for <bid/ask>: " << orderType << std::endl;
         throw std::invalid_argument("Invalid argument for <bid/ask>");
     }
+
+    std::vector<OrderBookEntry> orders = orderBook.getOrders(orderBookType, product);
 }
 
 double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string product, std::string type) {
@@ -154,12 +156,12 @@ double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string 
 }
 
 void AdvisorMain::printTime() {
-    std::cout << BOTPROMPT << currentTime << std::endl;
+    std::cout << BOTPROMPT << currentTime.first << std::endl;
 }
 
 void AdvisorMain::moveToNextTimestep() {
-    currentTime = orderBook.getNextTime(currentTime);
-    std::cout << BOTPROMPT << "now at " << currentTime << std::endl;
+    currentTime = orderBook.getNextTime(currentTime.first);
+    std::cout << BOTPROMPT << "now at " << currentTime.first << std::endl;
 }
 
 void AdvisorMain::terminateGracefully() {
