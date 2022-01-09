@@ -35,7 +35,11 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
         printAvailableProducts();
     } else if (cmd[0] == "min" || cmd[0] == "max") {
         printProductMinMaxOfType(cmd);
-    } else if (cmd[0] == "exit") {
+    }
+    else if (cmd[0] == "time") {
+        printTime();
+    }
+    else if (cmd[0] == "exit") {
         terminateGracefully();
     } else {
         std::cout << BOTPROMPT << "Invalid command." << std::endl;
@@ -126,7 +130,7 @@ double AdvisorMain::predictProductNextMaxMinOfType(bool max_or_min, std::string 
 }
 
 void AdvisorMain::printTime() {
-
+    std::cout << BOTPROMPT << currentTime << std::endl;
 }
 
 void AdvisorMain::moveToNextTimestep() {
