@@ -50,9 +50,9 @@ void AdvisorMain::handleUserCommand(std::string &userCommand) {
 }
 
 void AdvisorMain::init() {
-    currentTime = {orderBook.getEarliestTime(), 0};
+    currentTime = {orderBook.getEarliestTime(), 0}; // program is always initialized at the earliest time step
     std::string userCommand;
-    do {
+    do { // keep asking for user input until user chooses to exit
         std::cout << std::endl;
         std::cout << BOTPROMPT << "Please enter a command, or help for a list of commands (to exit simply type 'exit')"
                   << std::endl;
@@ -64,7 +64,7 @@ void AdvisorMain::init() {
 void AdvisorMain::printHelp() {
     std::cout << BOTPROMPT << "The available commands are:" << std::endl;
     std::cout << "---------------------------" << std::endl;
-    for (const auto &e: helpMap) {
+    for (const auto &e: helpMap) {  // print all available commands line by line
         std::cout << e.first << std::endl;
     }
     std::cout << "---------------------------" << std::endl;
@@ -76,7 +76,7 @@ void AdvisorMain::printHelpForCmd(const std::string &cmd) {
 }
 
 void AdvisorMain::printAvailableProducts() {
-    bool first = true;
+    bool first = true; // flag to aid in comma printing logic (no comma before first product etc.)
     for (const std::string &p: orderBook.getProducts()) {
         if (!first) {
             std::cout << ',';
@@ -97,12 +97,14 @@ void AdvisorMain::printProductMinMaxOfType(const std::vector<std::string> &cmd) 
     std::string product = cmd[1];
     std::string orderType = cmd[2];
 
+    // verify product passed by user actually exists
     auto products = orderBook.getProducts();
     if (!orderBook.checkProductExists(product)) {
         std::cout << "Unknown product: " << product << std::endl;
         throw std::invalid_argument("Unknown product");
     }
 
+    // verify order type passed by user is a valid one
     OrderBookType orderBookType;
     if (orderBook.isValidOrderType(orderType)) {
         orderBookType = orderBook.orderBookTypes[orderType];
