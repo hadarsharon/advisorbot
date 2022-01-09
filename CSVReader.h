@@ -6,6 +6,12 @@
 #include <vector>
 #include <string>
 
+/*
+DISCLAIMER:
+I took the liberty of reusing some of the code introduced with the CSVReader module during the course i.e. merklerex
+While some parts are left unchanged, some of the code has been rewritten or adapted by myself for advisorbot.
+*/
+
 class CSVReader {
 public:
     CSVReader();

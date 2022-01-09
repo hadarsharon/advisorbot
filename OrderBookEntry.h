@@ -6,6 +6,12 @@
 #include <string>
 #include <utility>
 
+/*
+DISCLAIMER:
+I took the liberty of reusing some of the code introduced with the OrderBookEntry module during the course i.e. merklerex
+While some parts are left unchanged, some of the code has been rewritten or adapted by myself for advisorbot.
+*/
+
 enum class OrderBookType {
     bid,
     ask,
